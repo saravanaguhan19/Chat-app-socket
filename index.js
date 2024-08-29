@@ -1,3 +1,4 @@
+const { log } = require("console");
 const express = require("express");
 const http = require("http");
 const socketio = require("socket.io");
@@ -10,6 +11,11 @@ app.use("/", express.static(__dirname + "/public"));
 
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
+
+  socket.on("msg_send", (data) => {
+    console.log(data);
+    io.emit("msg_rcvd", data);
+  });
 });
 
 server.listen(3000, () => {
